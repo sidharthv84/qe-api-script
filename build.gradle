@@ -12,10 +12,12 @@ buildscript {
 apply plugin: "groovy"
 apply plugin: "com.wiredforcode.spawn"
 
-String mockRootPath = "/Users/sidharthverma/IdeaProjects/AutomationFramework/wiremock/src/main/resources/mappings"
+String mockRootPath = "${rootDir}/wiremock/src/main/resources/mappings"
 String wireMockPidLock = '.pid.lock'
 
+
 task startBackgroundServer(type: SpawnProcessTask, dependsOn: "build") {
+    println(getRootDir())
     command "java -jar ${mockRootPath}/wiremock-standalone-2.18.0.jar --port 8086 --root-dir ${mockRootPath}"
     ready "verbose"
 }
