@@ -4,7 +4,7 @@ plugins {
 
 ext {
     wiremockExportDir = "${rootDir}/upstream-service-standalone-wiremock"
-    wiremockSoureDir = "src/main/resources/wiremock"
+    wiremockSoureDir = "src/main/resources"
 }
 
 configurations {
@@ -25,11 +25,24 @@ repositories {
 dependencies {
     compile"com.github.tomakehurst:wiremock:2.18.0"
     wiremockDependecies "com.github.tomakehurst:wiremock-standalone:2.18.0"
+
 }
 
-task copyDepJars(type: Copy) {
-    from configurations.wiremockDependecies
-    into '/Users/sidharthverma/IdeaProjects/AutomationFramework/wiremock/src/main/resources/mappings'
+//task copyDepJars(type: Copy) {
+//    from configurations.wiremockDependecies
+//    into '/Users/sidharthverma/IdeaProjects/AutomationFramework/wiremock/src/main/resources/mappings'
+//}
+
+build{
+    doLast {
+        ant.copy(todir: wiremockExportDir){
+            fileset(dir: wiremockSoureDir)
+        }
+        copy {
+            into wiremockExportDir
+            from configurations.wiremockDependecies
+        }
+    }
 }
 
 

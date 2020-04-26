@@ -1,48 +1,22 @@
-buildscript {
-    repositories {
-        maven {
-            url "https://plugins.gradle.org/m2/"
+apply plugin: 'idea'
+subprojects {
+    buildscript {
+        repositories {
+            maven { url "https://plugins.gradle.org/m2/"}
         }
     }
+
+    repositories {
+        maven { url "https://plugins.gradle.org/m2/"}
+    }
+
+    ext {
+        springBootVersion = '2.1.8.RELEASE'
+    }
+
+    apply plugin: 'java'
+
     dependencies {
-        classpath "gradle.plugin.com.wiredforcode:gradle-spawn-plugin:0.8.2"
     }
 }
-
-apply plugin: "groovy"
-apply plugin: "com.wiredforcode.spawn"
-
-String mockRootPath = "${rootDir}/wiremock/src/main/resources/mappings"
-String wireMockPidLock = '.pid.lock'
-
-
-task startBackgroundServer(type: SpawnProcessTask, dependsOn: "build") {
-    println(getRootDir())
-    command "java -jar ${mockRootPath}/wiremock-standalone-2.18.0.jar --port 8086 --root-dir ${mockRootPath}"
-    ready "verbose"
-}
-
-task startWiremock(){
-    dependsOn startBackgroundServer
-}
-
-task stopWiremock (type: KillProcessTask){
-    println "stop PrimaryMock"
-    pidLockFileName wireMockPidLock
-}
-
-task stopRunningWiremock(type: KillProcessTask){
-    pidLockFileName wireMockPidLock
-    onlyIf {
-        new File('./'+ wireMockPidLock).exists()
-    }
-    stopWiremock
-    println"stopRunning WireMock"
-}
-
-task stopWiremocktest(){
-    dependsOn stopWiremock
-}
-
-
 

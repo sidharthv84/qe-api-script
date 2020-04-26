@@ -6,4 +6,5 @@ pluginManagement{
 rootProject.name = 'AutomationFramework'
 include 'wiremock'
 include 'perftest'
+include 'acceptance-tests'
 

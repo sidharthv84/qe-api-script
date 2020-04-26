@@ -1,0 +1,25 @@
+{
+  "priority": 10,
+  "request": {
+    "method": "POST",
+    "urlPattern": "/test/sid3",
+    "headers": {
+      "Accept": {
+        "equalTo": "application/json"
+      },
+      "User-Id": {
+        "matches": "^(.+)"
+      }
+    },
+    "bodyPatterns": [
+      {
+        "contains": "<Ref>1234567890</Ref>"
+      }
+
+    ]
+  },
+  "response": {
+    "status": 200,
+    "bodyFileName": "file1.json"
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "priority": 10,
+  "request": {
+    "method": "GET",
+    "urlPattern": "/test/sid",
+    "headers": {
+      "Accept": {
+        "equalTo": "application/json"
+      },
+        "User-Id": {
+          "matches": "^(.+)"
+        }
+    }
+  },
+  "response": {
+    "status": 200,
+    "bodyFileName": "file1.json"
+  }
+}

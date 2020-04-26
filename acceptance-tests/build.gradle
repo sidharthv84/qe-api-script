@@ -1,0 +1,56 @@
+buildscript {
+    dependencies {
+        classpath "gradle.plugin.com.wiredforcode:gradle-spawn-plugin:0.8.2"
+    }
+}
+
+apply plugin: "groovy"
+apply plugin: "com.wiredforcode.spawn"
+
+dependencies {
+    compile("info.cukes:cucumber-java:1.2.5")
+    compile("info.cukes:cucumber-junit:1.2.5")
+    compile("com.googlecode.json-simple:json-simple:1.1.1")
+    compile("io.cucumber:cucumber-java:4.8.1")
+    compile("com.jayway.restassured:rest-assured:2.9.0")
+    compile("com.jayway.restassured:json-schema-validator:2.8.0")
+    compile("junit:junit:4.12")
+    compile("org.assertj:assertj-core:3.12.1")
+    compile("com.google.code.gson:gson:2.8.5")
+}
+
+String mockRootPath = "${rootDir}/upstream-service-standalone-wiremock"
+String wireMockPidLock = '.pid.lock'
+
+
+task startBackgroundServer(type: SpawnProcessTask, dependsOn: "build") {
+    println(getRootDir())
+    command "java -jar ${mockRootPath}/wiremock-standalone-2.18.0.jar --port 8086 --root-dir ${mockRootPath}"
+    ready "verbose"
+}
+
+task startWiremock(){
+    dependsOn startBackgroundServer
+}
+
+task stopWiremock (type: KillProcessTask){
+    println "stop PrimaryMock"
+    pidLockFileName wireMockPidLock
+}
+
+task stopRunningWiremock(type: KillProcessTask){
+    pidLockFileName wireMockPidLock
+    onlyIf {
+        new File('./'+ wireMockPidLock).exists()
+    }
+    stopWiremock
+    println"stopRunning WireMock"
+}
+
+task stopWiremocktest(){
+    dependsOn stopWiremock
+}
+
+task acceptanceTest(type: Test, dependsOn: test) {
+    include "CucumberTest.class"
+}
