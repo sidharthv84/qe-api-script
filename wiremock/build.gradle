@@ -1,0 +1,35 @@
+plugins {
+    id 'java'
+}
+
+ext {
+    wiremockExportDir = "${rootDir}/upstream-service-standalone-wiremock"
+    wiremockSoureDir = "src/main/resources/wiremock"
+}
+
+configurations {
+    wiremockDependecies
+}
+repositories {
+    maven {url "https://mvnrepository.com" }
+}
+
+sourceCompatibility = '1.8'
+targetCompatibility = '1.8'
+version = '1.2.1'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile"com.github.tomakehurst:wiremock:2.18.0"
+    wiremockDependecies "com.github.tomakehurst:wiremock-standalone:2.18.0"
+}
+
+task copyDepJars(type: Copy) {
+    from configurations.wiremockDependecies
+    into '/Users/sidharthverma/IdeaProjects/AutomationFramework/wiremock/src/main/resources/mappings'
+}
+
+

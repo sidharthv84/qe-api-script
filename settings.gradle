@@ -1,0 +1,9 @@
+pluginManagement{
+    repositories {
+        maven { }
+    }
+}
+rootProject.name = 'AutomationFramework'
+include 'wiremock'
+include 'perftest'
+
