@@ -11,7 +11,7 @@ dependencies {
     compile("info.cukes:cucumber-java:1.2.5")
     compile("info.cukes:cucumber-junit:1.2.5")
     compile("com.googlecode.json-simple:json-simple:1.1.1")
-    compile("io.cucumber:cucumber-java:4.8.1")
+  //  compile("io.cucumber:cucumber-java:4.8.1")
     compile("com.jayway.restassured:rest-assured:2.9.0")
     compile("com.jayway.restassured:json-schema-validator:2.8.0")
     compile("junit:junit:4.12")
@@ -51,6 +51,6 @@ task stopWiremocktest(){
     dependsOn stopWiremock
 }
 
-task acceptanceTest(type: Test, dependsOn: test) {
-    include "CucumberTest.class"
-}
+//task acceptanceTest(type: Test, dependsOn: test) {
+//    include "CucumberTest.class"
+//}
