@@ -1,0 +1,52 @@
+apply plugin: 'idea'
+apply plugin: 'scala'
+apply plugin: 'java'
+
+repositories {
+    maven { url "https://plugins.gradle.org/m2/" }
+}
+
+task runLoadTest(type: JavaExec) {
+    dependsOn testClasses
+    description = "Load testing with Gatling"
+    classpath = sourceSets.test.runtimeClasspath
+    main = "io.gatling.app.Gatling"
+
+    systemProperty "endpoint", java.lang.System.getProperty("endpoint")
+   // systemProperty "apiKey", java.lang.System.getProperty("apiKey")
+    //systemProperty "proxyurl", java.lang.System.getProperty("proxyurl")
+    //systemProperty "proxyport", java.lang.System.getProperty("proxyport")
+
+    def simulation = project.hasProperty('simulation') ? project.property('simulation') : 'LoadSimulation'
+    args = [
+           "--simulation", "simulations."+simulation,
+            "--results-folder", "${buildDir}/gatling-results",
+            "--bodies-folder", sourceSets.test.resources.srcDirs.toList().first().toString(),
+    ]
+}
+
+    ext  {
+        scalaVersion = '2.2.2'
+        scalaLibraryVersion = '2.11.8'
+    }
+
+    dependencies {
+        compile("io.gatling:gatling-core:${scalaVersion}")
+                {
+                    exclude(module: 'logback-classic')
+                }
+        compile("io.gatling:gatling-http:${scalaVersion}")
+                {
+                    exclude(module: 'logback-classic')
+                }
+        compile("org.scala-lang:scala-library:${scalaLibraryVersion}")
+                {
+                    exclude(module: 'logback-classic')
+                }
+        testCompile("io.gatling.highcharts:gatling-charts-highcharts:${scalaVersion}")
+                {
+                    exclude(module: 'logback-classic')
+                }
+    }
+
+
