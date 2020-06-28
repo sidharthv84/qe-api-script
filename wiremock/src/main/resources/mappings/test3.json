@@ -13,7 +13,7 @@
     },
     "bodyPatterns": [
       {
-        "contains": "<Ref>1234567890</Ref>"
+        "matchesJsonPath" : "$.user[?(@.last_name== 'Integration')]"
       }
 
     ]
